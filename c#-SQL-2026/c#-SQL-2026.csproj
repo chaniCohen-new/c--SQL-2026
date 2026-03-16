@@ -20,4 +20,9 @@
     <ProjectReference Include="..\..\C--repository-2026\C#-repository-2026\C#-repository-2026.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="models\" />
+    <Folder Include="migrations\" />
+  </ItemGroup>
+
 </Project>
