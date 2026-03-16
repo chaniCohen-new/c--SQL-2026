@@ -16,4 +16,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\C--repository-2026\C#-repository-2026\C#-repository-2026.csproj" />
+  </ItemGroup>
+
 </Project>
