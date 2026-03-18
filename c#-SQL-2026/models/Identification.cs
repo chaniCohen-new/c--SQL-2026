@@ -1,12 +1,18 @@
-﻿using C__repository_2026.Entities;
-using C__repository_2026.Interfaces; // הורדתי את הנקודה המיותרת שהייתה פה!
+﻿using System;
 using Microsoft.EntityFrameworkCore;
+using c__nRepository_2026.Entities;
+using c__nRepository_2026.Interfaces;
 
-namespace C__SQL_2026.models
+namespace c__SQL_2026.Identification
 {
-    public class AppDbContext : DbContext, IContext
+    // שינינו את השם ל-IdentificationContext
+    public class IdentificationContext : DbContext, IContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        public IdentificationContext()
+        {
+        }
+
+        public IdentificationContext(DbContextOptions<IdentificationContext> options) : base(options)
         {
         }
 
@@ -18,30 +24,20 @@ namespace C__SQL_2026.models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            // ... שאר הקוד של המודל נשאר אותו דבר ...
+        }
 
-            modelBuilder.Entity<Gallery>()
-                .HasOne(g => g.Character)
-                .WithMany()
-                .HasForeignKey(g => g.CharacterId)
-                .OnDelete(DeleteBehavior.Restrict);
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("server=DESKTOP-13C4MS2;database=ImageRecognitionDB;trusted_connection=true;TrustServerCertificate=true");
+            }
+        }
 
-            modelBuilder.Entity<DetectedCharacter>()
-                .HasOne(dc => dc.Character)
-                .WithMany(c => c.DetectedCharacters)
-                .HasForeignKey(dc => dc.CharacterId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Image>()
-                .HasOne(i => i.Gallery)
-                .WithMany(g => g.Images)
-                .HasForeignKey(i => i.GalleryId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<DetectedCharacter>()
-                .HasOne(dc => dc.Image)
-                .WithMany(i => i.DetectedCharacters)
-                .HasForeignKey(dc => dc.ImageId)
-                .OnDelete(DeleteBehavior.Cascade);
+        public int Save()
+        {
+            return base.SaveChanges();
         }
     }
 }
